@@ -1,0 +1,25 @@
+{% extends 'admin_base.html'%}
+
+{% block container %}
+  <section class="section green lighten-1">
+    <div class="container">
+      <h1 class="center"> Users Registerd </h1>
+      <table class="striped responsive-table white">
+        <thead>
+          <tr>
+            <th>Level</th>
+            <th>Number</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for level in ranks %}
+            <tr>
+              <td><a href="{{url_for('directory.indi_level', level=level.level)}}">{{level.level}}</a></td>
+              <td>{{numbers[level.level]}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+{% endblock %}

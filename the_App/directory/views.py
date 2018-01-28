@@ -1,7 +1,7 @@
 from flask import render_template, request, url_for, redirect, flash, session
 from flask import Blueprint
 from the_App import db, app
-from the_App.directory.models import Animal, Cattle, Sheep, Farmer
+from the_App.directory.models import Animal, Cattle, Sheep, Farmer, Ranking
 from wtforms import Form, StringField, PasswordField, validators
 from wtforms.fields.html5 import EmailField
 from passlib.hash import pbkdf2_sha256 as phash
@@ -54,11 +54,23 @@ def get_feed():
 def is_loggedin(f):
     @wraps(f)
     def wrap(*args, **kwargs):
-        if 'logged_in' in session:
+        if 'logged_in' in session or 'admin' in session:
             return f(*args, **kwargs)
         else:
             flash('Unauthorized, Please Sign in', 'danger')
             return redirect(url_for('directory.login'))
+    return wrap
+
+
+# Check if is logged in as admin
+def is_admin(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'admin' in session:
+            return f(*args, **kwargs)
+        else:
+            flash('Unauthorized', 'danger')
+            return redirect(url_for('directory.home'))
     return wrap
 
 
@@ -125,10 +137,10 @@ def update(family, name):
             livestock.age = age
         db.session.commit()
         flash('{0} update successful'.format(name), 'success')
-        return redirect(url_for('directory.get_animal', family = family, name=new_name))
+        return redirect(url_for('directory.get_animal', family=family, name=new_name))
 
 
-# Delete Table
+# Delete Route
 @directory.route('/delete/<family>/<name>')
 @is_loggedin
 def deleteAnimal(family, name):
@@ -137,12 +149,22 @@ def deleteAnimal(family, name):
         return 'Flash Message'
     if ch_family.name == 'Cattle':
         livestock = Cattle.query.filter_by(name=name).first()
+        image = livestock.imageurl
+        image_path = app.config['UPLOAD_FOLDER']+image[14:]
+        if os.path.exists(image_path):
+            # Delete the image from the file system
+            os.remove(image_path)
         db.session.delete(livestock)
         db.session.commit()
         flash('Deleted {0} from the Cattle list'.format(name), 'danger')
         return redirect(url_for('directory.get_animals'))
     if ch_family.name == 'Sheep':
         livestock = Sheep.query.filter_by(name=name).first()
+        image = livestock.imageurl
+        image_path = app.config['UPLOAD_FOLDER']+image[14:]
+        if os.path.exists(image_path):
+            # Delete the image from the file system
+            os.remove(image_path)
         db.session.delete(livestock)
         db.session.commit()
         flash('Deleted {0} from the Sheep list'.format(name), 'danger')
@@ -256,21 +278,21 @@ def upload(model, name):
             filename = secure_filename(file.filename)
             if model == 'Sheep':
                 folder = app.config['UPLOAD_FOLDER']+'/livestock/sheep'
-                file.save(os.path.join(folder, filename)) # Save to filesystem
+                file.save(os.path.join(folder, filename))  # Save to filesystem
                 # File path for use in imgsrc
                 filepath = 'images/uploads/livestock/sheep/'+filename
                 livestock = Sheep.query.filter_by(name=name).first()
                 livestock.imageurl = filepath
-                db.session.commit() # save to database
+                db.session.commit()  # save to database
                 livestock = Sheep.query.filter_by(name=name).first()
                 return redirect(url_for('directory.update', family='Sheep', name=livestock.name))
             elif model == 'Cattle':
                 folder = app.config['UPLOAD_FOLDER']+'/livestock/cattle'
-                file.save(os.path.join(folder, filename)) # Save to filesystem
+                file.save(os.path.join(folder, filename))  # Save to filesystem
                 filepath = 'images/uploads/livestock/cattle/'+filename
                 livestock = Cattle.query.filter_by(name=name).first()
                 livestock.imageurl = filepath
-                db.session.commit() # Save to database
+                db.session.commit()  # Save to database
                 livestock = Cattle.query.filter_by(name=name).first()
                 return redirect(url_for('directory.update', family='Cattle', name=livestock.name))
             elif model == 'Farmer':
@@ -286,3 +308,118 @@ def upload(model, name):
                 flash('Unauthorized', 'danger')
                 render_template('upload.html')
     return render_template('upload.html')
+
+
+# Administrator login route
+@directory.route('/administrator', methods=['GET', 'POST'])
+def admin():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password_get = request.form.get('password')
+        user_query = Farmer.query.filter_by(username=username).first()
+        # check if the user exists
+        if user_query:
+            level = user_query.level.level
+        else:
+            flash('Not an admin', 'danger')
+            return render_template('administrator.html')
+        # Check if user is an admin
+        if level == 'administrator':
+            password = user_query.password
+            verify_pass = phash.verify(password_get, password)
+            if verify_pass:
+                session['admin'] = True
+                session['imageurl'] = user_query.imageurl
+                session['username'] = username
+                session['email'] = user_query.email
+                flash('Logged in', 'success')
+                return redirect(url_for('directory.admin_dashboard'))
+            else:
+                flash('Wrong Password', 'danger')
+                return render_template('administrator.html')
+        else:
+            flash('Not an administrator', 'danger')
+            render_template('administrator.html')
+    return render_template('administrator.html')
+
+
+# Admin Logout Route
+@directory.route('/administrator/logout')
+@is_admin
+def admin_logout():
+    session.clear()
+    flash('Logged out')
+    return redirect(url_for('directory.admin'))
+
+# Administrator dashboard
+@directory.route('/administrator/dashboard')
+@is_admin
+def admin_dashboard():
+    # Fetch all user categories
+    admin = Ranking.query.filter_by(level='administrator').first()
+    manager = Ranking.query.filter_by(level='manager').first()
+    employee = Ranking.query.filter_by(level='employee').first()
+    customer = Ranking.query.filter_by(level='customer').first()
+    default = Ranking.query.filter_by(level='default').first()
+    ranks = [admin, manager, employee, customer, default]
+    admin_no = len([user.name for user in admin.farmer])
+    manager_no = len([user.name for user in manager.farmer])
+    employee_no = len([user.name for user in employee.farmer])
+    customer_no = len([user.name for user in customer.farmer])
+    default_no = len([user.name for user in default.farmer])
+    numbers = {
+        manager.level: manager_no,
+        employee.level: employee_no,
+        customer.level: customer_no,
+        default.level: default_no,
+        admin.level: admin_no
+    }
+
+    return render_template('adminDashboard.html', ranks=ranks, numbers=numbers)
+
+
+# Individual levels
+@directory.route('/administrator/<level>')
+@is_admin
+def indi_level(level):
+    # Individual level
+    users = Ranking.query.filter_by(level=level).first()
+    if not users:
+        flash('The level %s is not present' % level, 'danger')
+        return redirect(url_for('directory.admin_dashboard'))
+    return render_template('adminLevel.html', users=users)
+
+
+# Display Individual User in a level
+@directory.route('/administrator/<level>/<username>')
+@is_admin
+def indi_user(level, username):
+    # Individual user
+    level = Ranking.query.filter_by(level=level).first()
+    user = Farmer.query.filter_by(username=username).first()
+    if not user:
+        flash('No User %s' % username, 'danger')
+        return redirect(url_for('directory.admin_dashboard'))
+    if not level:
+        flash('No Level %s' % level, 'danger')
+        return redirect(url_for('directory.admin_dashboard'))
+    return render_template('adminUser.html', user=user)
+
+
+# Upgrade a user to a higher level or degrade
+@directory.route('/administrator/upgrade/<username>', methods=['POST'])
+@is_admin
+def upgrade(username):
+    # Upgrade or degrade a user
+    user = Farmer.query.filter_by(username=username).first()
+    if not user:
+        flash('The user %s is not present' % username, 'danger')
+        return redirect(url_for('directory.admin_dashboard'))
+    if request.method == 'POST':
+        level = request.form.get('level')
+        user.upgrade(level)
+        db.session.commit()
+        flash("%s's level has been changed to %s" % (username, level), 'success')
+        return redirect(url_for('directory.indi_user', level=level, username=username))
+    else:
+        return redirect(url_for('directory.admin_dashboard'))

@@ -22,3 +22,18 @@ from the_App.directory.views import directory
 app.register_blueprint(directory)
 
 db.create_all()
+
+from the_App.directory.models import Ranking
+# Create the Ranking levels
+if not Ranking.query.all():
+    admin = Ranking('administrator')
+    manager = Ranking('manager')
+    employee = Ranking('employee')
+    customer = Ranking('customer')
+    default = Ranking('default')
+    db.session.add(admin)
+    db.session.add(manager)
+    db.session.add(employee)
+    db.session.add(customer)
+    db.session.add(default)
+    db.session.commit()

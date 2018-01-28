@@ -1,0 +1,73 @@
+{% extends 'admin_base.html'%}
+
+{% block container %}
+
+  <!-- Details section -->
+  <section class="section">
+    <a href="{{url_for('directory.admin_dashboard')}}" class="green-text"><i class="material-icons">home</i></a>
+    <div class="container">
+      <div class="row">
+        <div class="col s12 l4">
+          <img src="{{url_for('static', filename=user.imageurl)}}" alt="user.name" class="materialboxed circle" width="200px">
+        </div>
+        <div class="col s12 l8">
+          <h5>Details</h5>
+          <div class="row">
+            <div class="col s12 l3">
+              <p>Name:</p>
+            </div>
+            <div class="col s12 l9">
+              <p>{{user.name}}</p>
+            </div>
+            <div class="col s12 l3">
+              <p>Username:</p>
+            </div>
+            <div class="col s12 l9">
+              <p>{{user.username}}</p>
+            </div>
+            <div class="col s12 l3">
+              <p>Level:</p>
+            </div>
+            <div class="col s12 l9">
+              <p>{{user.level.level}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Message section -->
+  <section class="section">
+    <div class="container">
+      <p>Messages from the user to be included later</p>
+    </div>
+  </section>
+
+  <!-- Upgrade section -->
+  <section class="section">
+    <div class="container">
+      <h3>Upgrade the User</h3>
+      <div class="row">
+        <form class="col s12" action="{{ url_for('directory.upgrade', username=user.username) }}" method="POST" role="form" id="create">
+          <div class="input-field col s6">
+            <select name="level" form="create">
+              <option value="" disabled selected>Select the Level</option>
+              <option value="administrator" id="administrator">Administrator</option>
+              <option value="manager" id="manager">Manager</option>
+              <option value="employee" id="employee">Employee</option>
+              <option value="customer" id="customer">Customer</option>
+              <option value="default" id="default">Default</option>
+            </select>
+            <label>Levels</label>
+          </div>
+
+          <div class="col s12">
+            <button class="btn waves-effect waves-light" type="submit">Submit <i class="material-icons right">send</i></button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </section>
+{% endblock %}
