@@ -1,0 +1,29 @@
+{% extends 'admin_base.html' %}
+
+{% block container %}
+<section class="section green lighten-4">
+  <a href="{{url_for('directory.admin_dashboard')}}" class="green-text"><i class="material-icons">home</i></a>
+  <div class="container">
+    <h2>Users in the level <small>{{users.level}}</small></h2>
+    <table class="responsive-table striped green">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Name</th>
+          <th>Username</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users.farmer %}
+          <tr>
+            <td><img src="{{url_for('static', filename=user.imageurl)}}" alt="{{user.name}}" class="materialboxed" height="80px"></td>
+            <td>{{user.name}}</td>
+            <td>{{user.username}}</td>
+            <td><a href="{{url_for('directory.indi_user', level=users.level, username=user.username)}}">View</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

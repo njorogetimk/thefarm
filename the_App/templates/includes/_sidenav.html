@@ -1,0 +1,29 @@
+<ul id="slide-out" class="sidenav sidenav-fixed">
+  <li><div class="user-view">
+    <div class="background">
+      <img src="{{url_for('static', filename='images/back.jpg')}}">
+    </div>
+    <a href="{{url_for('directory.upload', model='Farmer', name=session['username'])}}" target="_blank"><img class="circle" src="{{url_for('static', filename=session['imageurl'])}}"></a>
+    <a href="#name"><span class="white-text name">{{session['username']}}</span></a>
+    <a href="#email"><span class="white-text email">{{session['email']}}</span></a>
+  </div></li>
+  <li><a href="{{url_for('directory.admin_logout')}}"><i class="material-icons">person</i>Sign out</a></li>
+  <li><a href="{{url_for('directory.dashboard')}}" target="_blank"><i class="material-icons">free_breakfast</i>The Farm</a></li
+  <li><div class="divider"></div></li>
+  <li class="no-padding">
+    <ul class="collapsible">
+      <li class="bold"><a class="collapsible-header">Levels</a>
+        <div class="collapsible-body">
+          <ul>
+            <li><a href="{{url_for('directory.indi_level', level='administrator')}}">Administrator</a></li>
+            <li><a href="{{url_for('directory.indi_level', level='manager')}}">Manager</a></li>
+            <li><a href="{{url_for('directory.indi_level', level='employee')}}">Employee</a></li>
+            <li><a href="{{url_for('directory.indi_level', level='customer')}}">Customer</a></li>
+            <li><a href="{{url_for('directory.indi_level', level='default')}}">Default</a></li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+<a href="#" data-target="slide-out" class="sidenav-trigger top-nav full hide-on-large-only"><i class="material-icons">menu</i></a>

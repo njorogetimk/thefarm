@@ -1,7 +1,7 @@
 <!-- Used instead of a breadcrumb to display the profile image, and sign in routes -->
 
 <div class="container">
-  {% if session.logged_in %}
+  {% if session.logged_in or session.admin %}
     <!-- Image -->
     <a href="{{url_for('directory.upload', model='Farmer', name=session.username)}}"><img class="circle" src="{{url_for('static', filename=session.imageurl)}}" alt="farmer" height="100px"></a>
     <!-- Sign out -->

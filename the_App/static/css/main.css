@@ -7,8 +7,8 @@
 }
 
 /* Nav Color */
-nav{
-  background-color: green;
+nav, top-nav{
+  background-color: green !important;
 }
 
 #slide-out{
@@ -77,4 +77,71 @@ footer{
   border-radius: 20px;
   padding: 7px;
   font-size: 1.2em;
+}
+
+
+/* Admin dashboard */
+/* Top nav */
+nav.top-nav {
+ height:110px;
+ -webkit-box-shadow:none;
+ box-shadow:none;
+ border-bottom:1px solid rgba(0,0,0,0.14);
+ background-color:transparent
+}
+nav.top-nav h1.header {
+ margin:0;
+ padding-top:22px
+}
+
+/* header main and footer */
+header,
+main,
+footer {
+ padding-left:300px
+}
+
+@media only screen and (min-width: 601px) {
+ body>.page-footer>.container,
+ .top-nav>.container,
+ #index-banner>.container,
+ .github-commit>.container {
+  width:100%
+ }
+}
+
+@media only screen and (max-width: 992px) {
+ header,
+ main,
+ footer {
+  padding-left:0
+ }
+ h5>span {
+  display:block;
+  margin:0 0 15px 0
+ }
+}
+
+a.sidenav-trigger.top-nav {
+ position:absolute;
+ text-align:center;
+ height:48px;
+ width:48px;
+ top:28px;
+ float:none;
+ margin-left:1.5rem;
+ color:#f3989b;
+ font-size:36px;
+ z-index:2
+}
+a.sidenav-trigger.top-nav i {
+ font-size:32px
+}
+@media only screen and (max-width: 600px) {
+ a.sidenav-trigger.top-nav {
+  left:0
+ }
+ ul.sidenav.sidenav-fixed {
+  border:0
+ }
 }
