@@ -1,16 +1,22 @@
 <!-- Used instead of a breadcrumb to display the profile image, and sign in routes -->
 
-<div class="container">
-  {% if session.logged_in or session.admin %}
-    <!-- Image -->
-    <a href="{{url_for('directory.upload', model='Farmer', name=session.username)}}"><img class="circle" src="{{url_for('static', filename=session.imageurl)}}" alt="farmer" height="100px"></a>
-    <!-- Sign out -->
-    <a href="{{url_for('directory.logout')}}" class="btn right">Sign out</a>
-    <!-- Dashboard -->
-    <a href="{{url_for('directory.dashboard')}}" class="btn right">Dashboard</a>
-  {% else %}
-    <!-- Sign in -->
-    <a href="{{url_for('directory.login')}}" class="btn right">Sign in</a>
-  {% endif %}
-  <div class="clearfix"></div>
-</div>
+<section class="section green lighten-2">
+  <div class="container logregister white">
+    {% if session.logged_in or session.admin %}
+      <!-- Image -->
+      <a href="{{url_for('directory.upload', model='Farmer', name=session.username)}}" class="left"><img class="circle" src="{{url_for('static', filename=session.imageurl)}}" alt="farmer" height="100px"></a>
+      <!-- Username -->
+      <h2 class="left">{{session.username}}</h2>
+      <div class="clearfix hide-on-med-and-up"></div>
+      <hr class="hide-on-med-and-up">
+      <!-- Sign out -->
+      <a href="{{url_for('directory.logout')}}" class="btn right">Sign out</a>
+      <!-- Dashboard -->
+      <a href="{{url_for('directory.dashboard')}}" class="btn right">Dashboard</a>
+    {% else %}
+      <!-- Sign in -->
+      <a href="{{url_for('directory.login')}}" class="btn right">Sign in</a>
+    {% endif %}
+    <div class="clearfix"></div>
+  </div>
+</section>
