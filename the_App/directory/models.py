@@ -29,22 +29,11 @@ class Farmer(db.Model):
         self.email = email
         self.password = password
         self.imageurl = imageurl
-        level_chk = Ranking.query.filter_by(level=level).first()
-        if level_chk:
-            # if the rank exists
-            self.level = level_chk
-        else:
-            self.level = Ranking(level)
+        self.level = Ranking.query.filter_by(level=level).first()
 
     def upgrade(self, level):
         # Upgrade the rank of the user
-        level_chk = Ranking.query.filter_by(level=level).first()
-        if not level_chk:
-            # If the level does not exist, create the level
-            self.level = Ranking(level)
-        else:
-            # If the level exists
-            self.level = level_chk
+        self.level = Ranking.query.filter_by(level=level).first()
 
     def __repr__(self):
         return '<User %s>' % self.username
