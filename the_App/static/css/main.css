@@ -141,3 +141,15 @@ a.sidenav-trigger.top-nav i {
   border:0
  }
 }
+
+
+/* Dashboard part */
+/* Log Register */
+.logregister{
+  padding: 4px;
+  border-radius: 10px;
+}
+
+.dashboard h3{
+  margin: 0;
+}
