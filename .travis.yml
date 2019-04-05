@@ -5,4 +5,5 @@ install:
   - pip install flask
   - pip install flask-sqlalchemy
   - pip install flask-psycopg2
+  - pip install pytest
 script: pytest
