@@ -12,4 +12,4 @@ before_script:
 # - pip3 install -r requirements.txt
 - psql -c 'create database thefarm;' -U postgres
 
-script: pytest
+script: pytest test/test.py
