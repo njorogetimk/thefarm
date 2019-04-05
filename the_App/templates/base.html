@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>The Farm Application</title>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Import Materialize Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/materialize.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  </head>
+  <body>
+    {% block container %}{% endblock %}
+
+    <script src="{{ url_for('static', filename='js/materialize.min.js') }}" charset="utf-8"></script>
+    <script src="{{ url_for('static', filename='js/custom.js') }}" charset="utf-8"></script>
+  </body>
+</html>
