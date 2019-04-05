@@ -1,6 +1,6 @@
 from flask import render_template, request, url_for, redirect
 from flask import Blueprint
-from the_App import db
+from the_App import db, app
 from the_App.directory.models import Animal, Cattle
 
 
@@ -21,7 +21,7 @@ def get_animals():
 
 @directory.route('/animals/<family>/<name>')
 def get_animal(family, name):
-    if family == 'cattle':
+    if family == 'Cattle':
         livestock = Cattle.query.filter_by(name=name).first()
         return render_template('animal.html', livestock=livestock)
     else:
@@ -43,18 +43,19 @@ def get_feed():
 # Post Routes
 @directory.route('/animal', methods=['GET', 'POST'])
 def add_animal():
-    # name = request.form.get('name')
-    # family_name = request.form.get('family')
-    # age = request.form.get('age')
-    # gender = request.form.get('gender')
-    # family = Animal.query.filter_by(name=family_name).first()
-    # if not family:
-    #     family = Animal(family_name)
-    # if family_name == 'cattle':
-    #     livestock = Cattle(name, age, gender, family_name)
-    #     db.session.add(livestock)
-    #     db.session.commit()
-    #     return redirect(url_for('directory.get_animal_family', name=name, family=family_name))
+    name = request.form.get('name')
+    family_name = request.form.get('family')
+    age = request.form.get('age')
+    gender = request.form.get('gender')
+    family = Animal.query.filter_by(name=family_name).first()
+    app.logger.info(gender)
+    if not family:
+        family = Animal(family_name)
+    if family_name == 'Cattle':
+        livestock = Cattle(name, age, gender, family)
+        db.session.add(livestock)
+        db.session.commit()
+        return redirect(url_for('directory.get_animal', name=name, family=family_name))
     return render_template('add_animal.html')
 
 

@@ -34,7 +34,7 @@ class Cattle(db.Model):
     age = db.Column(db.Integer)  # Given in days
     gender = db.Column(db.Boolean)
     """" Relates to the Animal table"""
-    animal = db.relationship('Animals', backref=db.backref('cattle', lazy='dynamic'))
+    animal = db.relationship('Animal', backref=db.backref('cattle', lazy='dynamic'))
     animal_id = db.Column(db.Integer, db.ForeignKey('animal.id'))
 
     def __init__(self, name, age, gender, family):
