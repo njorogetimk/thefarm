@@ -1,0 +1,16 @@
+/* Navigation Styling */
+/* Make the side nav appear on all screen sizes; overide materialize */
+@media only screen and (min-width: 993px) {
+  nav a.sidenav-trigger {
+    display:inherit!important;
+  }
+}
+
+/* Nav Color */
+nav{
+  background-color: green;
+}
+
+#slide-out{
+  background: transparent;
+}

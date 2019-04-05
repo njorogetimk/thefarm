@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
   </head>
   <body>
+    {% include 'includes/_navbar.html' %}
     {% block container %}{% endblock %}
 
     <script src="{{ url_for('static', filename='js/materialize.min.js') }}" charset="utf-8"></script>
