@@ -4,5 +4,5 @@ python:
 install:
   - pip install flask
   - pip install flask-sqlalchemy
-  - pip install flask-pysycopg2
+  - pip install flask-psycopg2
 script: pytest
