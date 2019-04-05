@@ -1,7 +1,7 @@
 from the_App import db
 
 
-class User(db.Model):
+class Farmer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30), unique=True)
     password = db.Column(db.String(100))
@@ -34,15 +34,13 @@ class Cattle(db.Model):
     age = db.Column(db.Integer)  # Given in days
     gender = db.Column(db.Boolean)
     """" Relates to the Animal table"""
-    animal = db.relationship('Animals', backref=db.backref('cattle', lazy='dynamic'))
+    animal = db.relationship('Animal', backref=db.backref('cattle', lazy='dynamic'))
     animal_id = db.Column(db.Integer, db.ForeignKey('animal.id'))
-    """Relates to the Feed Table"""
-    feed = db.relationship('Feed', backref=db.backref('feeds', lazy='dynamic'))
-    feed_id = db.Column(db.Integer, db.ForeignKey('feed.id'))
 
-    def __init__(self, name, age, gender):
+    def __init__(self, name, age, gender, family):
         self.name = name
         self.age = age
+        self.animal = family
         if gender == 'M':
             self.gender = True
         else:
@@ -52,8 +50,9 @@ class Cattle(db.Model):
         return '<Cattle %s>' % self.name
 
 
-class Feed(db.Model):
-    """The Feeds Table"""
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(40), unique=True)
-    amount = db.Column(db.Float)
+# class Feed(db.Model):
+#     """The Feeds Table"""
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(40), unique=True)
+#     amount = db.Column(db.Float)
+#
