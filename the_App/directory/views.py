@@ -37,7 +37,6 @@ def get_feeds():
 @directory.route('/feed/<family>')
 def get_feed():
     pass
-    
 """
 
 # Post Routes
