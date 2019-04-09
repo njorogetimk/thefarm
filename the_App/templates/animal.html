@@ -1,1 +1,32 @@
 {% extends 'base.html' %}
+
+{% block container %}
+  <div class="container">
+    <h2 class="center">Record belonging to {{livestock.name}}</h2>
+    <table class="centered responsive-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Family</th>
+          <th>Gender</th>
+          <th>Age</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{livestock.name}}</td>
+          <td>{{livestock.animal.name}}</td>
+          <td>
+            {% if livestock.gender %}
+              Male
+            {% else %}
+              Female
+            {% endif %}
+          </td>
+          <td>{{livestock.age}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+{% endblock %}
