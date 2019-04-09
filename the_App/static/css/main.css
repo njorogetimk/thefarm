@@ -12,9 +12,24 @@ nav{
 }
 
 #slide-out{
-  background: transparent;
+  background: green;
 }
 
+.sidenav a, .sidenav i{
+  color: white !important;
+}
+.sidenav .collapsible-body{
+  color: black;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+.sidenav .collapsible-body a{
+  border-radius: 24px;
+  background-color: #388e3c;
+}
+.sidenav .collapsible .active .collapsible-body{
+  background-color: #43a047;
+}
 /* Collapsible List Body */
 .families .collapsible-body{
   padding: 4px;

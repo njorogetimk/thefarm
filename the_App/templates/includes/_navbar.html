@@ -3,17 +3,31 @@
   <ul id="slide-out" class="sidenav">
     <li><div class="user-view">
       <div class="background">
-        <img src="images/office.jpg">
+        <img src="{{url_for('static', filename='images/back.jpg')}}">
       </div>
-      <a href="#user"><img class="circle" src="images/yuna.jpg"></a>
-      <a href="#name"><span class="white-text name">John Doe</span></a>
-      <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+      <a href="{{url_for('directory.home')}}"><img class="circle" src="{{url_for('static', filename='images/logo.jpg')}}"></a>
+      <a href="#name"><span class="white-text name">Tim Farm</span></a>
+      <a href="#email"><span class="white-text email">njorogogetimk@gmail.com</span></a>
     </div></li>
-    <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
-    <li><a href="#!">Second Link</a></li>
+    <li><a href="#!"><i class="material-icons">person</i>Login</a></li>
+    <li><a href="#!">About</a></li>
     <li><div class="divider"></div></li>
-    <li><a class="subheader">Subheader</a></li>
-    <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+
+    <ul class="collapsible">
+      <li>
+        <div class="collapsible-header"><i class="material-icons">filter_drama</i>Animal Farm</div>
+        <div class="collapsible-body"><span><a href="{{url_for('directory.get_animals')}}">Livestock List</a></span></div>
+        <div class="collapsible-body"><span><a href="{{url_for('directory.add_animal')}}">Add an animal</a></span></div>
+
+      </li>
+      <li>
+        <div class="collapsible-header"><i class="material-icons">place</i>The Garden</div>
+      </li>
+      <li>
+        <div class="collapsible-header"><i class="material-icons">whatshot</i>Store</div>
+      </li>
+    </ul>
+
   </ul>
   <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 </nav>
