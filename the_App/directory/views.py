@@ -1,7 +1,7 @@
 from flask import render_template, request, url_for, redirect
 from flask import Blueprint
 from the_App import db, app
-from the_App.directory.models import Animal, Cattle
+from the_App.directory.models import Animal, Cattle, Sheep
 
 
 directory = Blueprint('directory', __name__)
@@ -23,6 +23,9 @@ def get_animals():
 def get_animal(family, name):
     if family == 'Cattle':
         livestock = Cattle.query.filter_by(name=name).first()
+        return render_template('animal.html', livestock=livestock)
+    if family == "Sheep":
+        livestock = Sheep.query.filter_by(name=name).first()
         return render_template('animal.html', livestock=livestock)
     else:
         return redirect('directory.home', error='no family name')
@@ -52,6 +55,11 @@ def add_animal():
         family = Animal(family_name)
     if family_name == 'Cattle':
         livestock = Cattle(name, age, gender, family)
+        db.session.add(livestock)
+        db.session.commit()
+        return redirect(url_for('directory.get_animal', name=name, family=family_name))
+    if family_name == 'Sheep':
+        livestock = Sheep(name, age, gender, family)
         db.session.add(livestock)
         db.session.commit()
         return redirect(url_for('directory.get_animal', name=name, family=family_name))
