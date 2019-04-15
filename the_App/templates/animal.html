@@ -24,9 +24,14 @@
             {% endif %}
           </td>
           <td>{{livestock.age}}</td>
+          <td><a href="#" class="btn">Update</a></td>
+          <td><a href="{{ url_for('directory.deleteAnimal', family=livestock.animal.name, name=livestock.name)}}" class="btn danger">Delete</a></td>
         </tr>
       </tbody>
     </table>
+    <a href="{{url_for('directory.get_animals')}}"><i class="material-icons small">navigate_before</i></a>
+    <!-- <div class="clearfix"></div> -->
+    <a href="{{url_for('directory.add_animal')}}" class="right"><i class="material-icons small blue-text">add</i></a>
   </div>
 
 {% endblock %}

@@ -1,4 +1,4 @@
-from flask import render_template, request, url_for, redirect
+from flask import render_template, request, url_for, redirect, jsonify
 from flask import Blueprint
 from the_App import db, app
 from the_App.directory.models import Animal, Cattle, Sheep
@@ -19,6 +19,7 @@ def get_animals():
     return render_template('animals.html', animals=animals)
 
 
+# Display a single animal
 @directory.route('/animals/<family>/<name>')
 def get_animal(family, name):
     if family == 'Cattle':
@@ -71,3 +72,26 @@ def add_animal():
 def add_feed():
     pass
 """
+# Update Routes
+@directory.route('/update/<family>/<name>')
+def updates(family, name):
+    pass
+
+
+# Delete Table
+@directory.route('/delete/<family>/<name>')
+def deleteAnimal(family, name):
+    ch_family = Animal.query.filter_by(name=family).first()  # Check for family
+    if not ch_family:
+        return ''
+    if ch_family.name == 'Cattle':
+        livestock = Cattle.query.filter_by(name=name).first()
+        db.session.delete(livestock)
+        db.session.commit()
+        return redirect(url_for('directory.get_animals'))
+    if ch_family.name == 'Sheep':
+        livestock = Sheep.query.filter_by(name=name).first()
+        db.session.delete(livestock)
+        db.session.commit()
+        return redirect(url_for('directory.get_animals'))
+    return str(livestock)

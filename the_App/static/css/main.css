@@ -39,3 +39,11 @@ nav{
 .families.collapsible-body span{
   border-radius: 25px;
 }
+
+/* Buttons */
+.btn,.btn-large,.btn-small,.btn-flat{
+  text-transform: none;
+}
+.danger{
+  background-color: red;
+}
