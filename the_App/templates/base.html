@@ -11,7 +11,11 @@
   </head>
   <body>
     {% include 'includes/_navbar.html' %}
-    {% block container %}{% endblock %}
+    <br>
+    {% include 'includes/_logregister.html' %}
+    {% block container %}
+      {% include 'includes/_messages.html' %}
+    {% endblock %}
 
     <script src="{{ url_for('static', filename='js/materialize.min.js') }}" charset="utf-8"></script>
     <script src="{{ url_for('static', filename='js/custom.js') }}" charset="utf-8"></script>

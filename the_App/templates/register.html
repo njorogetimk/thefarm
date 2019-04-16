@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block container %}
+  <div class="container">
+    <h2>Register User</h2>
+    {% from 'includes/_formhelpers.html' import render_field %}
+    <div class="row">
+      <form method="POST" action="" class="col s12">
+        <div class="row">
+          <div class="input-field col s12">
+            {{render_field(form.name, class_="validate")}}
+          </div>
+          <div class="input-field col s12">
+            {{render_field(form.username, class_="validate")}}
+          </div>
+          <div class="input-field col s12">
+            {{render_field(form.email, class_="validate")}}
+          </div>
+          <div class="input-field col s12">
+            {{render_field(form.password, class_="validate")}}
+          </div>
+          <div class="input-field col s12">
+            {{render_field(form.confirm, class_="validate")}}
+          </div>
+        </div>
+        <div class="col s12">
+        <button class="btn waves-effect waves-light" type="submit">Submit <i class="material-icons right">send</i></button>
+      </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

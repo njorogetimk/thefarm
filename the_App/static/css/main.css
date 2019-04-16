@@ -47,3 +47,8 @@ nav{
 .danger{
   background-color: red;
 }
+
+/* Flash Messages */
+.success{
+  background-color: green;
+}

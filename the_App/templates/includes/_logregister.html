@@ -1,0 +1,9 @@
+<div>
+  {% if session.logged_in %}
+    <a href="{{url_for('directory.logout')}}" class="btn right">Logout</a>
+    <a href="{{url_for('directory.dashboard')}}" class="btn right">Dashboard</a>
+  {% else %}
+    <a href="{{url_for('directory.login')}}" class="btn right">Sign in</a>
+  {% endif %}
+  <div class="clearfix"></div>
+</div>
