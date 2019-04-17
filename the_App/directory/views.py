@@ -47,6 +47,7 @@ def get_feed():
     pass
 """
 
+
 # Check if logged in
 def is_loggedin(f):
     @wraps(f)
@@ -54,9 +55,10 @@ def is_loggedin(f):
         if 'logged_in' in session:
             return f(*args, **kwargs)
         else:
-            flash('Unauthorized, Please Login', 'success')
+            flash('Unauthorized, Please Sign in', 'danger')
             return redirect(url_for('directory.login'))
     return wrap
+
 
 # Post Routes
 @directory.route('/animal', methods=['GET', 'POST'])
@@ -73,11 +75,13 @@ def add_animal():
         livestock = Cattle(name, age, gender, family)
         db.session.add(livestock)
         db.session.commit()
+        flash('Added {0} to the Cattle list'.format(name), 'success')
         return redirect(url_for('directory.get_animal', name=name, family=family_name))
     if family_name == 'Sheep':
         livestock = Sheep(name, age, gender, family)
         db.session.add(livestock)
         db.session.commit()
+        flash('Added {0} to the Sheep list'.format(name), 'success')
         return redirect(url_for('directory.get_animal', name=name, family=family_name))
     return render_template('add_animal.html')
 
@@ -87,6 +91,8 @@ def add_animal():
 def add_feed():
     pass
 """
+
+
 # Update Routes
 @directory.route('/update/<family>/<name>', methods=['POST', 'GET'])
 @is_loggedin
@@ -116,6 +122,7 @@ def update(family, name):
             livestock.name = new_name
             livestock.age = age
         db.session.commit()
+        flash('{0} update successful'.format(name), 'success')
         return redirect(url_for('directory.get_animal', family = family, name=new_name))
 
 
@@ -130,11 +137,13 @@ def deleteAnimal(family, name):
         livestock = Cattle.query.filter_by(name=name).first()
         db.session.delete(livestock)
         db.session.commit()
+        flash('Deleted {0} from the Cattle list'.format(name), 'danger')
         return redirect(url_for('directory.get_animals'))
     if ch_family.name == 'Sheep':
         livestock = Sheep.query.filter_by(name=name).first()
         db.session.delete(livestock)
         db.session.commit()
+        flash('Deleted {0} from the Sheep list'.format(name), 'danger')
         return redirect(url_for('directory.get_animals'))
     return str(livestock)
 
@@ -207,7 +216,7 @@ def login():
 @directory.route('/logout')
 def logout():
     session.clear()
-    flash('Logged Out', 'success')
+    flash('Signed Out', 'success')
     return redirect(url_for('directory.login'))
 
 

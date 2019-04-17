@@ -44,11 +44,29 @@ nav{
 .btn,.btn-large,.btn-small,.btn-flat{
   text-transform: none;
 }
+
+
+/* Flash Messages */
+.success, .danger, .error, .msg{
+  padding: 7px;
+  margin: 10px;
+  border-radius: 30px;
+}
+.success{
+  background-color: #9ccc65;
+}
 .danger{
   background-color: red;
 }
+.error{
+  background-color: red;
+}
+.msg{
+  background-color: blue;
+}
 
-/* Flash Messages */
-.success{
-  background-color: green;
+/* Content section div */
+.content{
+  padding: 5px;
+  border-radius: 10px;
 }

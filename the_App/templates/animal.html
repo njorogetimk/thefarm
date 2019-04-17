@@ -25,7 +25,7 @@
           </td>
           <td>{{livestock.age}}</td>
           <td><a href="{{url_for('directory.update', family=livestock.animal.name, name=livestock.name)}}" class="btn">Update</a></td>
-          <td><a href="{{ url_for('directory.deleteAnimal', family=livestock.animal.name, name=livestock.name)}}" class="btn danger">Delete</a></td>
+          <td><a href="{{ url_for('directory.deleteAnimal', family=livestock.animal.name, name=livestock.name)}}" class="btn red">Delete</a></td>
         </tr>
       </tbody>
     </table>
