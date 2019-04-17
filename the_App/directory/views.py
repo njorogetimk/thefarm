@@ -6,6 +6,8 @@ from wtforms import Form, StringField, PasswordField, validators
 from wtforms.fields.html5 import EmailField
 from passlib.hash import pbkdf2_sha256 as phash
 from functools import wraps
+import os
+from werkzeug.utils import secure_filename
 
 
 directory = Blueprint('directory', __name__)
@@ -201,6 +203,7 @@ def login():
             if verify_pass:
                 session['logged_in'] = True
                 session['username'] = username
+                session['imageurl'] = farmer.imageurl
                 flash('You are now logged in', 'success')
                 return redirect(url_for('directory.dashboard'))
             else:
@@ -225,3 +228,61 @@ def logout():
 @is_loggedin
 def dashboard():
     return render_template('dashboard.html')
+
+
+# UPLOADS AND ROUTE
+extensions = set(['png', 'jpg', 'jpeg'])
+
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in extensions
+
+
+@directory.route('/upload/image/<model>/<name>', methods=['POST', 'GET'])
+@is_loggedin
+def upload(model, name):
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part', 'danger')
+            return render_template('upload.html')
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file', 'danger')
+            return render_template('upload.html')
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            if model == 'Sheep':
+                folder = app.config['UPLOAD_FOLDER']+'/livestock/sheep'
+                file.save(os.path.join(folder, filename)) # Save to filesystem
+                # File path for use in imgsrc
+                filepath = 'images/uploads/livestock/sheep/'+filename
+                livestock = Sheep.query.filter_by(name=name).first()
+                livestock.imageurl = filepath
+                db.session.commit() # save to database
+                livestock = Sheep.query.filter_by(name=name).first()
+                return redirect(url_for('directory.update', family='Sheep', name=livestock.name))
+            elif model == 'Cattle':
+                folder = app.config['UPLOAD_FOLDER']+'/livestock/cattle'
+                file.save(os.path.join(folder, filename)) # Save to filesystem
+                filepath = 'images/uploads/livestock/cattle/'+filename
+                livestock = Cattle.query.filter_by(name=name).first()
+                livestock.imageurl = filepath
+                db.session.commit() # Save to database
+                livestock = Cattle.query.filter_by(name=name).first()
+                return redirect(url_for('directory.update', family='Cattle', name=livestock.name))
+            elif model == 'Farmer':
+                folder = app.config['UPLOAD_FOLDER']+'/users'
+                file.save(os.path.join(folder, filename))
+                filepath = 'images/uploads/users/'+filename
+                user = Farmer.query.filter_by(username=name).first()
+                user.imageurl = filepath
+                session['imageurl'] = user.imageurl
+                db.session.commit()
+                return redirect(url_for('directory.dashboard'))
+            else:
+                flash('Unauthorized', 'danger')
+                render_template('upload.html')
+    return render_template('upload.html')

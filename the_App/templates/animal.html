@@ -3,6 +3,7 @@
 {% block container %}
   <div class="container">
     <h2 class="center">{{livestock.name}} record</h2>
+    <img src="{{url_for('static', filename=livestock.imageurl)}}" alt="livestock" class="materialboxed">
     <table class="centered responsive-table">
       <thead>
         <tr>

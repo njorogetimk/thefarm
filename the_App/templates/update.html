@@ -3,6 +3,8 @@
 {% block container%}
   <div class="container">
     <h2 class="center">Update <small>{{livestock.name}}</small> record</h2>
+    <hr>
+    <a href="{{url_for('directory.upload', model=livestock.animal.name, name=livestock.name)}}"><img src="{{url_for('static', filename=livestock.imageurl)}}" alt="livestock" class="center responsive-img"></a>
     <table class="centered responsive-table">
       <thead>
         <tr>
