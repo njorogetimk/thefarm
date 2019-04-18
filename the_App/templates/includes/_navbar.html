@@ -9,7 +9,11 @@
       <a href="#name"><span class="white-text name">Tim Farm</span></a>
       <a href="#email"><span class="white-text email">njorogogetimk@gmail.com</span></a>
     </div></li>
-    <li><a href="#!"><i class="material-icons">person</i>Login</a></li>
+    {% if session.logged_in %}
+      <li><a href="{{url_for('directory.logout')}}"><img class="circle" src="{{url_for('static', filename=session.imageurl)}}" alt="farmer" height="40px">Sign out</a></li>
+    {% else %}
+      <li><a href="{{url_for('directory.login')}}"><i class="material-icons">person</i> Sign in</a></li>
+    {% endif %}
     <li><a href="#!">About</a></li>
     <li><div class="divider"></div></li>
 
