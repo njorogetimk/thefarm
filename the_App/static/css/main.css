@@ -70,3 +70,11 @@ nav{
   padding: 5px;
   border-radius: 10px;
 }
+
+
+/* Footer */
+footer{
+  border-radius: 20px;
+  padding: 7px;
+  font-size: 1.2em;
+}
