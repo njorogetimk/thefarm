@@ -1,48 +1,36 @@
+<!-- Displays a list of animal in the database grouped in their families -->
+
 {% extends 'base.html' %}
 
 {% block container %}
   <div class="container">
-    <!-- {% for family in animals %}
-      <h3 class="center">{{family.name}}</h3>
-      {% if family.name == 'Sheep' %}
-        {% for member in family.sheep %}
-          <a href="{{ url_for('directory.get_animal', family=family.name, name=member.name)}}">{{member.name}}</a>
-        {% endfor %}
-      {% else %}
-      {% for member in family.cattle %}
-        <a href="{{ url_for('directory.get_animal', family=family.name, name=member.name)}}">{{member.name}}</a>
-      {% endfor %}
-      {% endif %}
-    {% endfor %} -->
-
-
-  <div class="row">
-    <ul class="collapsible">
-        {% for family in animals %}
-          <li class="families">
-            <div class="collapsible-header"><i class="material-icons">filter_drama</i>{{ family.name }}</div>
-              {% if family.name == 'Cattle'%}
-                {% for member in family.cattle %}
+    <div class="row">
+      <ul class="collapsible">
+          {% for family in animals %}
+            <li class="families">
+              <div class="collapsible-header"><i class="material-icons">filter_drama</i>{{ family.name }}</div>
+                {% if family.name == 'Cattle'%}
+                  {% for member in family.cattle %}
+                    <div class="collapsible-body col s12 m3 center">
+                      <span class="z-depth-2">
+                        <a href="{{ url_for('directory.get_animal', family=family.name, name=member.name)}}">{{member.name}}</a>
+                      </span>
+                    </div>
+                  {% endfor %}
+                {% else %}
+                {% for member in family.sheep %}
                   <div class="collapsible-body col s12 m3 center">
                     <span class="z-depth-2">
                       <a href="{{ url_for('directory.get_animal', family=family.name, name=member.name)}}">{{member.name}}</a>
                     </span>
                   </div>
                 {% endfor %}
-              {% else %}
-              {% for member in family.sheep %}
-                <div class="collapsible-body col s12 m3 center">
-                  <span class="z-depth-2">
-                    <a href="{{ url_for('directory.get_animal', family=family.name, name=member.name)}}">{{member.name}}</a>
-                  </span>
-                </div>
-              {% endfor %}
-              {% endif %}
-              <div class="clearfix"></div>
-          </li>
-        {% endfor %}
-    </ul>
-  </div>
+                {% endif %}
+                <div class="clearfix"></div>
+            </li>
+          {% endfor %}
+      </ul>
+    </div>
 
   </div>
 {% endblock %}
