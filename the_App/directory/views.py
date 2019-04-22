@@ -128,7 +128,7 @@ def update(family, name):
         return redirect(url_for('directory.get_animal', family = family, name=new_name))
 
 
-# Delete Table
+# Delete Route
 @directory.route('/delete/<family>/<name>')
 @is_loggedin
 def deleteAnimal(family, name):
@@ -137,12 +137,22 @@ def deleteAnimal(family, name):
         return 'Flash Message'
     if ch_family.name == 'Cattle':
         livestock = Cattle.query.filter_by(name=name).first()
+        image = livestock.imageurl
+        image_path = app.config['UPLOAD_FOLDER']+image[14:]
+        if os.path.exists(image_path):
+            # Delete the image from the file system
+            os.remove(image_path)
         db.session.delete(livestock)
         db.session.commit()
         flash('Deleted {0} from the Cattle list'.format(name), 'danger')
         return redirect(url_for('directory.get_animals'))
     if ch_family.name == 'Sheep':
         livestock = Sheep.query.filter_by(name=name).first()
+        image = livestock.imageurl
+        image_path = app.config['UPLOAD_FOLDER']+image[14:]
+        if os.path.exists(image_path):
+            # Delete the image from the file system
+            os.remove(image_path)
         db.session.delete(livestock)
         db.session.commit()
         flash('Deleted {0} from the Sheep list'.format(name), 'danger')
