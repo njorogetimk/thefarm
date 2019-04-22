@@ -1,6 +1,18 @@
 from the_App import db
 
 
+class Ranking(db.Model):
+    """ The Ranking of users"""
+    id = db.Column(db.Integer, primary_key=True)
+    level = db.Column(db.String(30), nullable=True)
+
+    def __init__(self, level):
+        self.level = level
+
+    def __repr__(self):
+        return "<Level %s>" % self.level
+
+
 class Farmer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30))
@@ -8,13 +20,31 @@ class Farmer(db.Model):
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(200))
     imageurl = db.Column(db.String(100), nullable=True)
+    level = db.relationship('Ranking', backref=db.backref('farmer', lazy='dynamic'))
+    level_id = db.Column(db.Integer, db.ForeignKey('ranking.id'))
 
-    def __init__(self, name, username, email, password, imageurl='images/logo.jpg'):
+    def __init__(self, name, username, email, password, imageurl='images/logo.jpg', level='default'):
         self.name = name
         self.username = username
         self.email = email
         self.password = password
         self.imageurl = imageurl
+        level_chk = Ranking.query.filter_by(level=level).first()
+        if level_chk:
+            # if the rank exists
+            self.level = level_chk
+        else:
+            self.level = Ranking(level)
+
+    def upgrade(self, level):
+        # Upgrade the rank of the user
+        level_chk = Ranking.query.filter_by(level=level).first()
+        if not level_chk:
+            # If the level does not exist, create the level
+            self.level = Ranking(level)
+        else:
+            # If the level exists
+            self.level = level_chk
 
     def __repr__(self):
         return '<User %s>' % self.username
