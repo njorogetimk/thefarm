@@ -26,3 +26,9 @@ document.addEventListener('DOMContentLoaded', function() {
 let rfile = document.getElementById('real-file')
 let btn = document.getElementById('custom-button')
 let span = document.getElementById('custom-text')
+
+// Slider
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.slider');
+    var instances = M.Slider.init(elems, {});
+  });

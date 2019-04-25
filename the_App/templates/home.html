@@ -1,5 +1,42 @@
 {% extends 'base.html' %}
 
 {% block container%}
-<h2>Welcome Home</h2>
+<section class="section green lighten-3">
+  <div class="container">
+
+  <div class="slider blue-text">
+    <ul class="slides">
+      <li>
+        <img src="{{url_for('static', filename='slide/im1.jpg')}}">
+        <div class="caption center-align">
+          <h3>The Njoroges Farm</h3>
+          <h5 class="light grey-text text-lighten-3">Commited to Serve</h5>
+        </div>
+      </li>
+      <li>
+        <img src="{{url_for('static', filename='slide/im2.jpg')}}">
+        <div class="caption left-align">
+          <h3>Efficient Farmer's API</h3>
+          <h5 class="light grey-text text-lighten-3">For clear concise records</h5>
+        </div>
+      </li>
+      <li>
+        <img src="{{url_for('static', filename='slide/im3.jpg')}}">
+        <div class="caption right-align">
+          <h3>The Customer's Satisfaction</h3>
+          <h5 class="light grey-text text-lighten-3">Is our priority</h5>
+        </div>
+      </li>
+      <li>
+        <img src="{{url_for('static', filename='slide/im4.jpg')}}">
+        <div class="caption center-align">
+          <h3>Take a holiday and visit us</h3>
+          <h5 class="light grey-text text-lighten-3">Nakuru, Bahati, Limuko farm</h5>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  </div>
+</section>
 {% endblock %}
